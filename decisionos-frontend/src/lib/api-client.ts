@@ -30,6 +30,7 @@ export async function get<T>(path: string, init?: RequestInit): Promise<T> {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      ...authHeaders(),
       ...(init?.headers ?? {}),
     },
   });
@@ -46,9 +47,36 @@ export async function post<T>(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...authHeaders(),
       ...(init?.headers ?? {}),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   return handleResponse<T>(res);
+}
+
+export async function put<T>(
+  path: string,
+  body?: unknown,
+  init?: RequestInit
+): Promise<T> {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...init,
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+      ...(init?.headers ?? {}),
+    },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  return handleResponse<T>(res);
+}
+
+function authHeaders(): Record<string, string> {
+  if (typeof window === "undefined") {
+    return {};
+  }
+  const token = window.localStorage.getItem("decisionos_token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
