@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:decisionos}
+    username: ${DB_USER:decisionos}
+    password: ${DB_PASSWORD:decisionos}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+simulation:
+  monte-carlo:
+    default-samples: 1000
+
+groq:
+  api-key: ${GROQ_API_KEY:}
+  api-base: ${GROQ_API_BASE:https://api.groq.com/openai/v1}
+  model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
