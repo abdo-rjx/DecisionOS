@@ -29,4 +29,5 @@ docker compose up --build
 
 - [x] Phase 0 — scaffolding (backend + frontend + compose + Groq test)
 - [x] MVP v1 — all modules working end-to-end (see summary in commit history)
+- [x] 2026-09-16 — compose + frontend fixes (JWT wiring, API URL build-arg, local PG port)
 
